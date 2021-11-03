@@ -3,16 +3,33 @@ var web3;
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const Fortmatic = window.Fortmatic;
-const evmChains = window.evmChains;
 
 let web3Modal;
 let provider;
 let selectedAccount;
 var contract;
+var connectStatus = false;
+
+$(window).bind('beforeunload', function(event) {
+  try{
+    provider.walletConnectProvider = null;
+  }catch(e)
+  {
+  }
+  try{
+    provider.disconnect();
+  }catch(e)
+  {
+  }
+  try{
+    provider.close();
+  }catch(e)
+  {
+  }
+});
 
 window.addEventListener('load', async () => {
 	init();
-   onConnect();
 });
 
 async function onConnect() {
@@ -56,38 +73,36 @@ async function onDisconnect() {
 
 async function fetchAccountData() {
 	web3 = new Web3(provider);
-	const chainId = await web3.eth.getChainId();
-	const chainData = evmChains.getChain(chainId);
 	// Get list of accounts of the connected wallet
 	const accounts = await web3.eth.getAccounts();
 	selectedAccount = accounts[0];
 	contract = new web3.eth.Contract(abi, "0x643e08b21a1DA1a00f97dd974931D09abb1C7c36");
+  connectStatus = true;
+  jQuery("#w-node-f17a72c9-10e2-ce69-b31e-90dc47d1e910-c556bb9f").html("Proceed Purchase");
 }
 
 function init(){
 	const providerOptions = {
-	    walletconnect: {
-	      package: WalletConnectProvider,
-	      options: {
-	        // Mikko's test key - don't copy as your mileage may vary
-	        infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
-	      }
-	    },
+   walletconnect: {
+     package: WalletConnectProvider,
+     options: {
+       infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
+     }
+   },
 
-	    fortmatic: {
-	      package: Fortmatic,
-	      options: {
-	        // Mikko's TESTNET api key
-	        key: "pk_test_391E26A3B43A3350"
-	      }
-	    }
-  	};
+   fortmatic: {
+     package: Fortmatic,
+     options: {
+       key: "pk_test_391E26A3B43A3350"
+     }
+   }
+ };
 
-  	web3Modal = new Web3Modal({
+ web3Modal = new Web3Modal({
 	    cacheProvider: false, // optional
 	    providerOptions, // required
 	    disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
-  	});
+   });
 }
 
 async function buyTicket(){
@@ -100,32 +115,36 @@ async function buyTicket(){
 	}
 	var amount = Web3.utils.toWei(jQuery("#amount").val(), 'nano');
 	console.log(amount)
-    var buyStatus = await contract.methods.buy(amount).send({from: selectedAccount});
-    getDataInfo();
+  var buyStatus = await contract.methods.buy(amount).send({from: selectedAccount});
+  getDataInfo();
 
-    if (buyStatus.status == true){
-		jQuery('.toast-body').html('Successfully Buyed!');
-		jQuery('.toast').toast('show');
-    }
+  if (buyStatus.status == true){
+    jQuery('.toast-body').html('Successfully Buyed!');
+    jQuery('.toast').toast('show');
+  }
 }
 
 async function purchase(){
+  if (connectStatus === false){
+    onConnect();
+  }else{
    var amount = parseInt(jQuery('.quantity').val());
    var gas = 178000;
    if (amount > 0 && amount <= 20){
-      if (provider){
-         var buyStatus;
-         var isWhiteListed = await contract.methods.isWhiteListed(selectedAccount).call();
-         gas = gas + (amount - 1) * 50000;
-         if (isWhiteListed){
-            buyStatus = await contract.methods.createItem(amount).send({from: selectedAccount, value: Web3.utils.toWei((0.08*amount).toString(), 'ether'), gas: gas});
-         }else{
-            buyStatus = await contract.methods.createItem(amount).send({from: selectedAccount, value: Web3.utils.toWei((0.1*amount).toString(), 'ether'), gas: gas});
-         }
-      }else{
-         onConnect();
-      }
-   }else{
-      alert("Please input correct quantity")
-   }
+    if (provider){
+     var buyStatus;
+     var isWhiteListed = await contract.methods.isWhiteListed(selectedAccount).call();
+     gas = gas + (amount - 1) * 50000;
+     if (isWhiteListed){
+      buyStatus = await contract.methods.createItem(amount).send({from: selectedAccount, value: Web3.utils.toWei((0.08*amount).toString(), 'ether'), gas: gas});
+    }else{
+      buyStatus = await contract.methods.createItem(amount).send({from: selectedAccount, value: Web3.utils.toWei((0.1*amount).toString(), 'ether'), gas: gas});
+    }
+  }else{
+   onConnect();
+ }
+}else{
+  alert("Please input correct quantity")
+}
+}
 }
