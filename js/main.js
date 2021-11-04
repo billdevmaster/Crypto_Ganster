@@ -44,7 +44,7 @@ async function onConnect() {
     fetchAccountData();
   } catch(e) {
     console.log("Could not get a wallet connection", e);
-    alert(e.message);
+    alert("Could not get a wallet connection");
     return;
   }
 
