@@ -28,6 +28,7 @@ $(window).bind('beforeunload', function(event) {
 });
 
 window.addEventListener('load', async () => {
+  onDisconnect();
 	init();
 });
 
