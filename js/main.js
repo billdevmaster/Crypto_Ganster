@@ -36,6 +36,7 @@ async function onConnect() {
   try {
     provider = await web3Modal.connect();
     const ethereum = window.ethereum;
+    
     await ethereum.request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: '0x1' }]
@@ -79,6 +80,7 @@ async function fetchAccountData() {
 	const accounts = await web3.eth.getAccounts();
 	selectedAccount = accounts[0];
 	contract = new web3.eth.Contract(abi, "0x643e08b21a1DA1a00f97dd974931D09abb1C7c36");
+  connectStatus = true;
 }
 
 function init() {
