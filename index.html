@@ -47,6 +47,7 @@
           <a href="https://discord.com/invite/kryptogangsters" class="nav__link w-nav-link">Discord</a>
           <a href="https://t.me/KryptoGangsters" class="nav__link w-nav-link">telegram</a>
           <a href="https://twitter.com/kryptogangsters" class="nav__link w-nav-link">twitter</a>
+          <a href="#" class="nav__link w-nav-link" id="connectwallet" onclick="onConnect()" style="border: 1px solid; padding: 10px;">connect wallet</a>
         </nav>
         <div class="menu-button w-nav-button">
           <div class="w-icon-nav-menu"></div>
@@ -332,30 +333,30 @@
   <script src="js/main.js"></script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
   <script>
-// function moveLine(myLine) {
-//   var myDistance =  myLine.offset().left - $('.nav__menu').offset().left;
-//   var myWidth = myLine.width();
-//   var myColor = myLine.parent().data( "color" );
-//   $('.nav__line').css({'background-color': myColor, 'width': myWidth + 'px', 'transform': 'translateX(' + myDistance + 'px)'});
-// }
-// if ( $('.w--current p').length > 0) {
-//   moveLine( $('.w--current p') );
-// }
-// window.onresize = function(){ 
-//   if ( $('.w--current p').length > 0) {
-//   moveLine( $('.w--current p') );
-//   }
-// }
-// $( ".nav__link" ).mouseenter(function() {
-// 	moveLine( $(this).find('p') );
-// });
-// $( ".nav__link" ).mouseleave(function() {
-//   if ( $('.w--current p').length > 0) {
-//   moveLine( $('.w--current p') );
-// } else {
-//   $('.nav__line').css('width', '0px');
-// }
-// });
+    function moveLine(myLine) {
+      var myDistance =  myLine.offset().left - $('.nav__menu').offset().left;
+      var myWidth = myLine.width();
+      var myColor = myLine.parent().data( "color" );
+      $('.nav__line').css({'background-color': myColor, 'width': myWidth + 'px', 'transform': 'translateX(' + myDistance + 'px)'});
+    }
+    if ( $('.w--current p').length > 0) {
+      moveLine( $('.w--current p') );
+    }
+    window.onresize = function(){ 
+      if ( $('.w--current p').length > 0) {
+      moveLine( $('.w--current p') );
+      }
+    }
+    $( ".nav__link" ).mouseenter(function() {
+      moveLine( $(this).find('p') );
+    });
+    $( ".nav__link" ).mouseleave(function() {
+      if ( $('.w--current p').length > 0) {
+      moveLine( $('.w--current p') );
+    } else {
+      $('.nav__line').css('width', '0px');
+    }
+    });
 </script>
   <style>
 .horizontal-trigger {height: calc(100% - 100vh);

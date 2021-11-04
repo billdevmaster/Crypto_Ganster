@@ -34,7 +34,8 @@ window.addEventListener('load', async () => {
 async function onConnect() {
   try {
     provider = await web3Modal.connect();
-    console.log(provider)
+    web3 = new Web3(provider);
+    contract = new web3.eth.Contract(abi, "0x643e08b21a1DA1a00f97dd974931D09abb1C7c36");
     const ethereum = window.ethereum;
     await ethereum.request({
       method: 'wallet_switchEthereumChain',
@@ -72,12 +73,11 @@ async function onDisconnect() {
 }
 
 async function fetchAccountData() {
-	web3 = new Web3(provider);
 	// Get list of accounts of the connected wallet
 	const accounts = await web3.eth.getAccounts();
-	selectedAccount = accounts[0];
-	contract = new web3.eth.Contract(abi, "0x643e08b21a1DA1a00f97dd974931D09abb1C7c36");
+	selectedAccount = accounts[0];	
   connectStatus = true;
+  $("#connectwallet").text("connected");
   jQuery("#w-node-f17a72c9-10e2-ce69-b31e-90dc47d1e910-c556bb9f").html("Proceed Purchase");
 }
 
@@ -103,7 +103,7 @@ function init(){
 	    providerOptions, // required
 	    disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
    });
-   console.log(provider);
+   web3Modal.clearCachedProvider();
 }
 
 async function buyTicket(){
@@ -127,25 +127,25 @@ async function buyTicket(){
 
 async function purchase() {
   if (connectStatus === false){
-    onConnect();
+    alert("please connect wallet");
   }else{
    var amount = parseInt(jQuery('.quantity').val());
    var gas = 178000;
    if (amount > 0 && amount <= 20){
     if (provider){
-     var buyStatus;
-     var isWhiteListed = await contract.methods.isWhiteListed(selectedAccount).call();
-     gas = gas + (amount - 1) * 50000;
-     if (isWhiteListed){
-      buyStatus = await contract.methods.createItem(amount).send({from: selectedAccount, value: Web3.utils.toWei((0.08*amount).toString(), 'ether'), gas: gas});
+      var buyStatus;
+      var isWhiteListed = await contract.methods.isWhiteListed(selectedAccount).call();
+      gas = gas + (amount - 1) * 50000;
+      if (isWhiteListed){
+        buyStatus = await contract.methods.createItem(amount).send({from: selectedAccount, value: Web3.utils.toWei((0.08*amount).toString(), 'ether'), gas: gas});
+      }else{
+        buyStatus = await contract.methods.createItem(amount).send({from: selectedAccount, value: Web3.utils.toWei((0.1*amount).toString(), 'ether'), gas: gas});
+      }
     }else{
-      buyStatus = await contract.methods.createItem(amount).send({from: selectedAccount, value: Web3.utils.toWei((0.1*amount).toString(), 'ether'), gas: gas});
+      alert("please connect wallet");
     }
   }else{
-   onConnect();
- }
-}else{
-  alert("Please input correct quantity")
-}
+    alert("Please input correct quantity")
+  }
 }
 }
