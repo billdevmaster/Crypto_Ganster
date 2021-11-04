@@ -35,8 +35,6 @@ window.addEventListener('load', async () => {
 async function onConnect() {
   try {
     provider = await web3Modal.connect();
-    web3 = new Web3(provider);
-    contract = new web3.eth.Contract(abi, "0x643e08b21a1DA1a00f97dd974931D09abb1C7c36");
     const ethereum = window.ethereum;
     await ethereum.request({
       method: 'wallet_switchEthereumChain',
@@ -45,7 +43,6 @@ async function onConnect() {
     fetchAccountData();
   } catch(e) {
     console.log("Could not get a wallet connection", e);
-    alert("Could not get a wallet connection");
     return;
   }
 
@@ -75,12 +72,13 @@ async function onDisconnect() {
 }
 
 async function fetchAccountData() {
+	web3 = new Web3(provider);
+	const chainId = await web3.eth.getChainId();
+	const chainData = evmChains.getChain(chainId);
 	// Get list of accounts of the connected wallet
 	const accounts = await web3.eth.getAccounts();
-	selectedAccount = accounts[0];	
-  connectStatus = true;
-  $("#connectwallet").text("connected");
-  jQuery("#w-node-f17a72c9-10e2-ce69-b31e-90dc47d1e910-c556bb9f").html("Proceed Purchase");
+	selectedAccount = accounts[0];
+	contract = new web3.eth.Contract(abi, "0x643e08b21a1DA1a00f97dd974931D09abb1C7c36");
 }
 
 function init(){
@@ -133,8 +131,8 @@ async function purchase() {
   }else{
    var amount = parseInt(jQuery('.quantity').val());
    var gas = 178000;
-   if (amount > 0 && amount <= 20){
-    if (provider){
+   if (amount > 0 && amount <= 20) {
+    if (provider) {
       var buyStatus;
       var isWhiteListed = await contract.methods.isWhiteListed(selectedAccount).call();
       gas = gas + (amount - 1) * 50000;
