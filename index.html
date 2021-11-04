@@ -343,30 +343,30 @@
   <script src="js/main.js"></script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
   <script>
-    function moveLine(myLine) {
-      var myDistance =  myLine.offset().left - $('.nav__menu').offset().left;
-      var myWidth = myLine.width();
-      var myColor = myLine.parent().data( "color" );
-      $('.nav__line').css({'background-color': myColor, 'width': myWidth + 'px', 'transform': 'translateX(' + myDistance + 'px)'});
-    }
-    if ( $('.w--current p').length > 0) {
-      moveLine( $('.w--current p') );
-    }
-    window.onresize = function(){ 
-      if ( $('.w--current p').length > 0) {
-      moveLine( $('.w--current p') );
-      }
-    }
-    $( ".nav__link" ).mouseenter(function() {
-      moveLine( $(this).find('p') );
-    });
-    $( ".nav__link" ).mouseleave(function() {
-      if ( $('.w--current p').length > 0) {
-      moveLine( $('.w--current p') );
-    } else {
-      $('.nav__line').css('width', '0px');
-    }
-    });
+    // function moveLine(myLine) {
+    //   var myDistance =  myLine.offset().left - $('.nav__menu').offset().left;
+    //   var myWidth = myLine.width();
+    //   var myColor = myLine.parent().data( "color" );
+    //   $('.nav__line').css({'background-color': myColor, 'width': myWidth + 'px', 'transform': 'translateX(' + myDistance + 'px)'});
+    // }
+    // if ( $('.w--current p').length > 0) {
+    //   moveLine( $('.w--current p') );
+    // }
+    // window.onresize = function(){ 
+    //   if ( $('.w--current p').length > 0) {
+    //   moveLine( $('.w--current p') );
+    //   }
+    // }
+    // $( ".nav__link" ).mouseenter(function() {
+    //   moveLine( $(this).find('p') );
+    // });
+    // $( ".nav__link" ).mouseleave(function() {
+    //   if ( $('.w--current p').length > 0) {
+    //   moveLine( $('.w--current p') );
+    // } else {
+    //   $('.nav__line').css('width', '0px');
+    // }
+    // });
 </script>
   <style>
 .horizontal-trigger {height: calc(100% - 100vh);
@@ -382,42 +382,42 @@ word-break:break-word;
 // © Code by T.RICKS, https://www.timothyricks.com/
 // Copyright 2021, T.RICKS, All rights reserved.
 // You have the license to use this code in your projects but not to redistribute it to others
-function calculateScroll() {
-	// Desktop
-	let itemsInView = 3;
-  let scrollSpeed = 1.2;
-  if (window.matchMedia('(max-width: 479px)').matches) {
-  	// Mobile Portrait
-  	itemsInView = 1;
-    scrollSpeed = 1.2;
-  } else if (window.matchMedia('(max-width: 767px)').matches) {
-  	// Mobile Landscape
-    itemsInView = 1;
-    scrollSpeed = 1.2;
-  } else if (window.matchMedia('(max-width: 991px)').matches) {
-  	// Tablet
-    itemsInView = 2;
-    scrollSpeed = 1.2;
-  }
-	let horizontalItem = $('.horizontal-item');
-  let horizontalSection = $('.horizontal-section');
-  let moveAmount = horizontalItem.length - itemsInView;
-  let minHeight = (scrollSpeed * horizontalItem.outerWidth()) * horizontalItem.length;
-  if (moveAmount <= 0) {
-  	moveAmount = 0;
-    minHeight = 0;
-    // horizontalSection.css('height', '100vh');
-  } else {
-  	horizontalSection.css('height', '200vh');
-  }
-  let moveDistance = horizontalItem.outerWidth() * moveAmount;
-  $('html').css('font-size', moveDistance + 'px');
-  horizontalSection.css('min-height', minHeight + 'px');
-}
-calculateScroll();
-window.onresize = function(){ 
-	calculateScroll();
-}
+// function calculateScroll() {
+// 	// Desktop
+// 	let itemsInView = 3;
+//   let scrollSpeed = 1.2;
+//   if (window.matchMedia('(max-width: 479px)').matches) {
+//   	// Mobile Portrait
+//   	itemsInView = 1;
+//     scrollSpeed = 1.2;
+//   } else if (window.matchMedia('(max-width: 767px)').matches) {
+//   	// Mobile Landscape
+//     itemsInView = 1;
+//     scrollSpeed = 1.2;
+//   } else if (window.matchMedia('(max-width: 991px)').matches) {
+//   	// Tablet
+//     itemsInView = 2;
+//     scrollSpeed = 1.2;
+//   }
+// 	let horizontalItem = $('.horizontal-item');
+//   let horizontalSection = $('.horizontal-section');
+//   let moveAmount = horizontalItem.length - itemsInView;
+//   let minHeight = (scrollSpeed * horizontalItem.outerWidth()) * horizontalItem.length;
+//   if (moveAmount <= 0) {
+//   	moveAmount = 0;
+//     minHeight = 0;
+//     // horizontalSection.css('height', '100vh');
+//   } else {
+//   	horizontalSection.css('height', '200vh');
+//   }
+//   let moveDistance = horizontalItem.outerWidth() * moveAmount;
+//   $('html').css('font-size', moveDistance + 'px');
+//   horizontalSection.css('min-height', minHeight + 'px');
+// }
+// calculateScroll();
+// window.onresize = function(){ 
+// 	calculateScroll();
+// }
 </script>
 </body>
 </html>
