@@ -56,7 +56,6 @@ function init() {
             }
         }
     };
-    console.log("okay")
     web3Modal = new Web3Modal({
         cacheProvider: false, // optional
         providerOptions, // required
@@ -100,6 +99,7 @@ async function fetchAccountData() {
   const accounts = await web3.eth.getAccounts();
   accountInfo['address'] = accounts[0];
   accountInfo['chainId'] = await web3.eth.getChainId();
+  selectedAccount = accounts[0];
   connectStatus = true;
 }
 
