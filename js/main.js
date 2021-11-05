@@ -73,6 +73,7 @@ async function onConnect() {
         provider = await web3Modal.connect();
         web3 = new Web3(provider);
         contract = new web3.eth.Contract(abi, contractAddress[chainID]);
+        $("#connectwallet").text("Connected");
     } catch (e) {
         console.log("Could not get a wallet connection", e);
         return;
