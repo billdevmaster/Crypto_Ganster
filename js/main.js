@@ -48,13 +48,13 @@ function init() {
     // Built-in web browser provider (only one can exist as a time)
     // like MetaMask, Brave or Opera is added automatically by Web3modal
     const providerOptions = {
-        // walletconnect: {
-        //     package: WalletConnectProvider,
-        //     options: {
-        //         // Mikko's test key - don't copy as your mileage may vary
-        //         infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
-        //     }
-        // }
+        walletconnect: {
+            package: WalletConnectProvider,
+            options: {
+                // Mikko's test key - don't copy as your mileage may vary
+                infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
+            }
+        }
     };
     console.log("okay")
     web3Modal = new Web3Modal({
